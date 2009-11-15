@@ -10,7 +10,7 @@
 use strict;
 use warnings;
 
-# Radar site ID
+# Radar site ID; look this up at the RIDGE site above
 my $siteID = 'LWX';
 
 # Output image
