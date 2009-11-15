@@ -28,6 +28,10 @@ my @mapLayers = (
     '_N0R_Legend_0.gif',
 );
 
+# Make the html file
+my $htmlFile = 'index.html';
+makeIndex() unless (-e $htmlFile);
+
 # Remove the old base reflectivity image & get the new one
 unlink $siteID . '_N0R_0.gif';
 system('wget -q ' . $ridgeBase . '/RadarImg/N0R/' .  $siteID . '_N0R_0.gif');
@@ -66,3 +70,38 @@ sub compose {
 
     system("$composite -compose atop $top $bottom $outImage &> /dev/null");
 }
+
+# Write the index file
+sub makeIndex {
+    my $content;
+
+    # Slurp the whole file
+    {
+        local $/;
+        $content = <DATA>;
+    }
+    $content =~ s/SITE_ID/$siteID/;
+
+    open(my $fh, '>', $htmlFile) or die $!;
+
+    print $fh $content;
+}
+
+__DATA__
+<html>
+
+<head>
+    <title>NWS SITE_ID Radar</title>
+    <meta http-equiv='refresh' content='300'>
+</head>
+
+<body>
+<table>
+       <tr>
+               <td><img src="base_reflectivity.jpg"></td>
+               <td><img src="base_reflectivity.jpg"></td>
+       </tr>
+</table>
+</body>
+
+</html>
