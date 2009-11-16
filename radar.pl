@@ -76,7 +76,7 @@ sub grabLayer {
 sub compose {
     my ($top, $bottom) = @_;
 
-    system("$composite -compose atop $top $bottom $outImage &> /dev/null");
+    system("$composite -compose atop $top $bottom $outImage");
 }
 
 # Write the index file
