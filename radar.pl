@@ -56,7 +56,8 @@ foreach my $layer (@mapLayers) {
 sub grabLayer {
     my $layer = shift;
 
-    return 1 if (-e $layer);
+    # The Legend is the only layer that changes
+    return 1 if (-e $layer && $layer !~ /Legend/);
 
     if ($layer =~ /Warnings/) {
         system("wget -q $ridgeBase/Warnings/Short/" . $layer);
