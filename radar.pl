@@ -12,7 +12,7 @@ use strict;
 use warnings;
 
 # Radar site ID; look this up at the RIDGE site above
-my $siteID = 'LWX';
+my $siteID = 'MUX';
 
 # Output image
 my $outImage = 'base_reflectivity.jpg';
@@ -56,7 +56,8 @@ foreach my $layer (@mapLayers) {
 sub grabLayer {
     my $layer = shift;
 
-    return 1 if (-e $layer);
+    # The Legend is the only layer that changes
+    return 1 if (-e $layer && $layer !~ /Legend/);
 
     if ($layer =~ /Warnings/) {
         system("wget -q $ridgeBase/Warnings/Short/" . $layer);
@@ -76,7 +77,7 @@ sub grabLayer {
 sub compose {
     my ($top, $bottom) = @_;
 
-    system("$composite -compose atop $top $bottom $outImage");
+    system("$composite -compose atop $top $bottom $outImage 2>&1 > /dev/null");
 }
 
 # Write the index file
